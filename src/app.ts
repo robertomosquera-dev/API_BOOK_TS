@@ -1,14 +1,22 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
+import { ApiResponse,HttpStatus } from "./utils/ApiResponse";
+import BookRoutes from "./routes/book.routes.js";
 
 const app = express();
-const PORT: number = 4030;
 
 app.use(express.json());
 
-app.get('/',(req,res,next)=>{
+app.get('/',(req:Request,res:Response,next:NextFunction)=>{
     res.send("Hola mundo");
 })
 
-app.set("PORT", PORT);
+app.use('/book',BookRoutes);
+
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+  res.status(HttpStatus.InternalServerError).json(
+    ApiResponse.error(HttpStatus.InternalServerError, error.message)
+  );
+});
+
 
 export default app;

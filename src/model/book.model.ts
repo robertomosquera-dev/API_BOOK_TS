@@ -33,7 +33,7 @@ export class BookModel {
         return this.ano;
     }
 
-    public isDisponible(): boolean {
+    public getDisponible(): boolean {
         return this.disponible;
     }
 
@@ -67,18 +67,21 @@ export class BookModel {
     }
 }
 
-type Book = {
-    readonly id: number;
-    readonly titulo: string;
-    readonly stock: number;
-    readonly autor: string;
-    readonly editorial: string;
-    readonly ano: number;
+// book.model.ts
+export type Book = {
+    readonly id:         number;  
+    readonly titulo:     string;
+    readonly stock:      number;
+    readonly autor:      string;
+    readonly editorial:  string;
+    readonly ano:        number;
     readonly disponible: boolean;
 };
 
-export type BookRequest = Omit<Book, "id" | "disponible">;
-
+// Omitir id, y hacer disponible opcional
+export type BookRequest = Omit<Book, "id" | "disponible"> & {
+  disponible?: boolean;
+};
 export type UpdateBookRequest = {id:number} & Partial<Book>;
 
 export type BookResponse = Readonly<Book>;
